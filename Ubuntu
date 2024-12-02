@@ -1,0 +1,45 @@
+#!/bin/bash
+----------------------------------------------------------------------------
+# Install Java17
+sudo apt install openjdk-17-jre-headless -y
+---------------------------------------------------------------------------
+# Download Jenkins GPG key
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+# Add Jenkins repository to package manager sources
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+# Update package manager repositories
+sudo apt-get update
+
+# Install Jenkins
+sudo apt-get install jenkins -y
+
+--------------------------------------------------------------------------
+# Grafana installation
+
+# Install the prerequisite packages:
+sudo apt-get install -y apt-transport-https software-properties-common wget
+
+# Import the GPG key:
+sudo mkdir -p /etc/apt/keyrings/
+wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null
+
+# To add a repository for stable releases, run the following command:
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+# To add a repository for beta releases, run the following command:
+echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com beta main" | sudo tee -a /etc/apt/sources.list.d/grafana.list
+
+# Updates the list of available packages
+sudo apt-get update
+
+# Installs the latest OSS release:
+sudo apt-get install grafana
+
+# Installs the latest Enterprise release:
+sudo apt-get install grafana-enterprise
+----------------------------------------------------------------------------------------
